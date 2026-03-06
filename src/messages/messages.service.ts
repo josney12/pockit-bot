@@ -35,7 +35,7 @@ export class MessagesService {
   }
 
   // Recupero los últimos N mensajes con un contacto para armar el historial de OpenAI
-  // Nota: se devuelven en orden DESC (más reciente primero); el llamador debe invertir si necesita orden cronológico
+  
   async findRecentConversation(
     contactNumber: string,
     limit = 10,
