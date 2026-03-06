@@ -1,0 +1,76 @@
+{
+  "info": {
+    "name": "PockiBot Backend",
+    "_postman_id": "00000000-0000-0000-0000-000000000001",
+    "description": "Colección de endpoints principales del backend PockiBot.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Healthcheck",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api"]
+        }
+      }
+    },
+    {
+      "name": "Webhook Verify (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/webhook/whatsapp?hub.mode=subscribe&hub.verify_token={{WHATSAPP_VERIFY_TOKEN}}&hub.challenge=12345",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "webhook", "whatsapp"],
+          "query": [
+            {
+              "key": "hub.mode",
+              "value": "subscribe"
+            },
+            {
+              "key": "hub.verify_token",
+              "value": "{{WHATSAPP_VERIFY_TOKEN}}"
+            },
+            {
+              "key": "hub.challenge",
+              "value": "12345"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Webhook Message (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"object\": \"whatsapp_business_account\",\n  \"entry\": [\n    {\n      \"id\": \"WHATSAPP_BUSINESS_ACCOUNT_ID\",\n      \"changes\": [\n        {\n          \"value\": {\n            \"messaging_product\": \"whatsapp\",\n            \"metadata\": {\n              \"display_phone_number\": \"1234567890\",\n              \"phone_number_id\": \"{{WHATSAPP_PHONE_NUMBER_ID}}\"\n            },\n            \"contacts\": [\n              {\n                \"profile\": {\n                  \"name\": \"Usuario Prueba\"\n                },\n                \"wa_id\": \"573001112233\"\n              }\n            ],\n            \"messages\": [\n              {\n                \"from\": \"573001112233\",\n                \"id\": \"wamid.HBgLNzk1MjM0NTY3ODkwFQIAEhgUMzQ0NkZBNTI0QzgyOUI2RTIyAA==\",\n                \"timestamp\": \"1675171935\",\n                \"text\": {\n                  \"body\": \"¿A cómo está el dólar hoy?\"\n                },\n                \"type\": \"text\"\n              }\n            ]\n          },\n          \"field\": \"messages\"\n        }\n      ]\n    }\n  ]\n}\n"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/webhook/whatsapp",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "webhook", "whatsapp"]
+        }
+      }
+    }
+  ]
+}
+
