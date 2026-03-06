@@ -1,115 +1,293 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+🤖 WhatsApp AI Bot – Prueba Técnica
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Bot de WhatsApp con Inteligencia Artificial desarrollado para la prueba técnica de Desarrollador Fullstack.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+El sistema permite recibir mensajes desde WhatsApp, procesarlos mediante OpenAI, ejecutar herramientas si es necesario y responder automáticamente al usuario.
 
-## Descripción
+La integración con Twilio permite recibir y enviar mensajes de WhatsApp mediante webhooks.
 
-Backend en NestJS para el reto **Pocki Asistente Virtual**. Expone:
+🎯 Objetivo del proyecto
 
-- **Webhook de WhatsApp Cloud API** (`POST /api/webhook/whatsapp`) para recibir mensajes.
-- **Integración con OpenAI** para analizar intención del usuario y decidir si usar tools.
-- **Tool de scraping de TRM** (dólar en Colombia) consultando `https://www.dolar-colombia.com/`.
-- **Persistencia en PostgreSQL** de mensajes entrantes y salientes.
+Construir un bot capaz de:
 
-## Requisitos previos
+Recibir mensajes desde WhatsApp
 
-- Node.js 20+
-- PostgreSQL (BD creada, por ejemplo `pockibot`)
-- Cuenta de Meta con **WhatsApp Cloud API** configurada.
-- API key de OpenAI (modelo recomendado: `gpt-4o-mini`).
+Analizar la intención del usuario mediante IA
 
-## Configuración
+Ejecutar herramientas según la intención detectada
 
-1. Copiar el archivo de ejemplo:
+Mantener contexto de conversación
 
-```bash
-cp .env.example .env
-```
+Guardar historial de mensajes
 
-2. Editar `.env` con tus valores:
+Evitar duplicación de mensajes
 
-- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
-- `OPENAI_API_KEY`
-- `WHATSAPP_VERIFY_TOKEN` (debes usar este mismo valor en la configuración del webhook en Meta)
-- `WHATSAPP_TOKEN` (token de acceso de la app de Meta)
-- `WHATSAPP_PHONE_NUMBER_ID` (ID del número de WhatsApp Cloud)
+🧱 Arquitectura del sistema
 
-## Instalación
+El sistema sigue una arquitectura modular basada en NestJS.
 
-```bash
+WhatsApp User
+      │
+      ▼
+Twilio WhatsApp API
+      │
+      ▼
+Webhook Controller (NestJS)
+      │
+      ▼
+Message Processing Service
+      │
+      ├── OpenAI Intent Analysis
+      │
+      ├── Tool Execution
+      │
+      └── Message Storage
+      │
+      ▼
+Database
+      │
+      ▼
+Response → Twilio → WhatsApp User
+🛠 Tecnologías utilizadas
+
+Backend:
+
+NestJS
+
+TypeScript
+
+Node.js
+
+Servicios externos:
+
+Twilio (WhatsApp API)
+
+OpenAI (Análisis de intención)
+
+Base de datos:
+
+PostgreSQL (o la que estés usando)
+
+Herramientas de desarrollo:
+
+Ngrok
+
+Postman
+
+📂 Estructura del proyecto
+src
+│
+├── whatsapp
+│   ├── whatsapp.controller.ts
+│   ├── whatsapp.service.ts
+│
+├── messages
+│   ├── messages.controller.ts
+│   ├── messages.service.ts
+│
+├── ai
+│   └── openai.service.ts
+│
+├── database
+│   └── entities
+│
+├── app.module.ts
+└── main.ts
+⚙️ Requisitos
+
+Antes de ejecutar el proyecto debes tener instalado:
+
+Node.js v18+
+
+npm
+
+Ngrok
+
+cuenta en Twilio
+
+API key de OpenAI
+
+🚀 Instalación
+1️⃣ Clonar repositorio
+git clone https://github.com/usuario/whatsapp-ai-bot.git
+cd whatsapp-ai-bot
+2️⃣ Instalar dependencias
 npm install
-```
+3️⃣ Configurar variables de entorno
 
-## Ejecutar el proyecto
+Crear archivo .env
 
-```bash
-# desarrollo con watch
+PORT=3000
+
+OPENAI_API_KEY=your_openai_api_key
+
+TWILIO_ACCOUNT_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_token
+TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
+
+DATABASE_URL=postgresql://user:password@localhost:5432/whatsapp_bot
+▶️ Ejecutar la aplicación
+
+Modo desarrollo:
+
 npm run start:dev
 
-# o modo normal
-npm run start
-```
+Servidor disponible en:
 
-La API quedará escuchando en `http://localhost:3000/api`.
+http://localhost:3000
+🌐 Exponer servidor con Ngrok
 
-### Endpoints principales
+Para permitir que WhatsApp pueda enviar mensajes al backend.
 
-- `GET /api` → healthcheck sencillo.
-- `GET /api/webhook/whatsapp` → verificación de webhook (usado por Meta).
-- `POST /api/webhook/whatsapp` → recepción de mensajes de WhatsApp (payload de WhatsApp Cloud API).
-- `GET /api/messages/recent/:contactNumber` → consulta de conversación reciente con un número.
+ngrok http 3000
 
-### Documentación OpenAPI (Swagger)
+Obtendrás una URL pública:
 
-- Una vez levantado el backend, puedes abrir la documentación interactiva en:
-- `http://localhost:3000/api/docs`
-- Desde ahí puedes probar los endpoints y ver los contratos de entrada/salida.
+https://xxxx.ngrok-free.app
+📱 Configuración del Webhook
 
-## Flujo de mensajes
+En la consola de Twilio configurar:
 
-1. El usuario envía un mensaje de texto al número de WhatsApp Cloud.
-2. Meta llama a `POST /api/webhook/whatsapp` con el payload correspondiente.
-3. El backend:
-   - Guarda el mensaje en PostgreSQL.
-   - Llama a OpenAI para analizar la intención.
-   - Si detecta que el usuario pregunta por el dólar/TRM, ejecuta la tool de TRM (scraping).
-   - Construye una respuesta final al usuario.
-   - Envía la respuesta de vuelta por WhatsApp usando la Graph API.
-   - Registra también el mensaje de salida en la base de datos.
+POST
+https://TU_URL_NGROK/api/webhook/whatsapp/twilio
 
-## Colección de Postman
+Content-Type:
 
-En este proyecto se incluye una colección `postman_collection.json` con:
+application/x-www-form-urlencoded
+🔗 Endpoints disponibles
+📩 Webhook de WhatsApp
+POST /api/webhook/whatsapp/twilio
 
-- `GET /api` (healthcheck).
-- `GET /api/webhook/whatsapp` (verificación de webhook).
-- `POST /api/webhook/whatsapp` (simulación de evento de mensaje entrante).
+Recibe los mensajes enviados desde WhatsApp.
 
-Importa el archivo en Postman para probar localmente.
+Campos recibidos:
 
-## Decisiones de arquitectura
+Campo	Descripción
+MessageSid	ID único del mensaje
+From	Número del usuario
+To	Número del bot
+Body	Mensaje enviado
+📜 Historial de conversación
+GET /api/messages/recent/:contactNumber
 
-- **NestJS + módulos**: el código se organiza por dominios (`whatsapp`, `ai`, `tools`, `messages`) para mantener una arquitectura modular y fácil de extender.
-- **TypeORM + PostgreSQL**: se usa `synchronize: true` para simplificar el reto técnico (no requiere migraciones manuales).
-- **OpenAI como orquestador**: un servicio (`AiService`) decide si usar tools mediante un JSON estructurado y luego ejecuta la tool de TRM cuando corresponde.
-- **Tool de TRM desacoplada**: la lógica de scraping (`ToolsService`) está aislada, por lo que es sencillo añadir nuevas tools (por ejemplo, noticias de tecnología).
+Ejemplo:
 
+GET /api/messages/recent/573001234567
+
+Respuesta:
+
+[
+  {
+    "role": "user",
+    "content": "Hola"
+  },
+  {
+    "role": "assistant",
+    "content": "Hola! ¿Cómo puedo ayudarte?"
+  }
+]
+🧪 Pruebas del sistema
+Saludo básico
+{
+  "MessageSid": "SM_TEST_001",
+  "From": "whatsapp:+573001234567",
+  "To": "whatsapp:+14155238886",
+  "Body": "Hola! como estas?"
+}
+Consulta con IA
+{
+  "MessageSid": "SM_TEST_002",
+  "From": "whatsapp:+573001234567",
+  "To": "whatsapp:+14155238886",
+  "Body": "cuanto esta el dolar hoy?"
+}
+Prueba de contexto
+
+Primer mensaje:
+
+{
+  "MessageSid": "SM_TEST_004",
+  "From": "whatsapp:+573001234567",
+  "Body": "me llamo Carlos"
+}
+
+Segundo mensaje:
+
+{
+  "MessageSid": "SM_TEST_005",
+  "From": "whatsapp:+573001234567",
+  "Body": "recuerdas como me llamo?"
+}
+
+El bot debería responder utilizando el contexto almacenado.
+
+🔒 Manejo de duplicación
+
+Cada mensaje recibido incluye un identificador:
+
+MessageSid
+
+El sistema verifica si ese mensaje ya fue procesado.
+
+Si el MessageSid ya existe:
+
+El mensaje se ignora
+
+Esto evita respuestas duplicadas.
+
+🧠 Flujo de procesamiento del mensaje
+
+1️⃣ Usuario envía mensaje en WhatsApp
+
+2️⃣ Twilio envía webhook al backend
+
+3️⃣ El backend:
+
+valida duplicados
+
+guarda el mensaje
+
+envía texto a OpenAI
+
+4️⃣ La IA determina:
+
+intención del usuario
+
+si debe ejecutar una herramienta
+
+5️⃣ Se genera respuesta
+
+6️⃣ Se guarda en base de datos
+
+7️⃣ Se responde al usuario
+
+📈 Posibles mejoras futuras
+
+Integración con CRM
+
+Soporte para múltiples herramientas
+
+Dashboard de conversaciones
+
+Entrenamiento de prompts personalizados
+
+Soporte multilenguaje
+
+métricas y analytics
+
+👨‍💻 Autor
+
+Josney Castillo
+Desarrollador Fullstack
+
+Tecnologías principales:
+
+Angular
+
+NestJS
+
+Java
+
+Spring Boot
+
+PostgreSQL
